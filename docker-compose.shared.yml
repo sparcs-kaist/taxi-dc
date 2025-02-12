@@ -1,0 +1,29 @@
+services:
+  taxi-proxy:
+    container_name: taxi-proxy-shared
+    restart: always
+    image: nginx:1.24.0
+    ports:
+      - "${PROXY_PORT:?err}:80"
+    networks:
+      - shared-proxy
+    volumes:
+      - ./taxi-proxy/conf.d:/etc/nginx/conf.d:ro
+
+  taxi-mongo:
+    container_name: taxi-mongo-shared
+    restart: always
+    image: mongo:8.0
+    networks:
+      - shared-backend
+    volumes:
+      - ./taxi-mongo/mongodb.conf:/etc/mongodb.conf
+      - taxi-mongo-data:/data/db:rw
+
+volumes:
+  taxi-mongo-data:
+    external: true
+
+networks:
+  shared-proxy:
+  shared-backend:
