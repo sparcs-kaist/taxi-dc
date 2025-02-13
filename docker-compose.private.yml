@@ -9,7 +9,7 @@ services:
       shared-proxy:
       shared-backend:
       shared-ipvlan:
-        ipv4_address: 10.251.1.10
+        ipv4_address: 10.251.1.10 # TODO: Edit here
     volumes:
       - ./taxi-dev-servers/taxi-front-testuser1:/home/ubuntu/taxi-front
       - ./taxi-dev-servers/taxi-back-testuser1:/home/ubuntu/taxi-back
