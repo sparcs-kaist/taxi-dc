@@ -7,18 +7,15 @@ services:
       - "${PROXY_PORT:?err}:80"
     networks:
       - shared-proxy
-    volumes:
-      - ./taxi-proxy/conf.d:/etc/nginx/conf.d:ro
+      - shared-ipvlan
 
   taxi-mongo:
     container_name: taxi-mongo-shared
     restart: always
-    image: mongo:8.0
+    image: mongo:4.4
     networks:
       - shared-backend
-    volumes:
-      - ./taxi-mongo/mongodb.conf:/etc/mongodb.conf
-      - taxi-mongo-data:/data/db:rw
+      - shared-ipvlan
 
 volumes:
   taxi-mongo-data:
@@ -27,3 +24,11 @@ volumes:
 networks:
   shared-proxy:
   shared-backend:
+  shared-ipvlan:
+    driver: ipvlan
+    driver_opts:
+      parent: ens19
+    ipam:
+      config:
+        - subnet: 10.251.1.0/24
+          gateway: 10.251.1.1
