@@ -1,3 +1,8 @@
+# TAXI Dev Servers
+taxi-dev-servers/*
+!taxi-dev-servers/scripts/
+!taxi-dev-servers/Dockerfile
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
