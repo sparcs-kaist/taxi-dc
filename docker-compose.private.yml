@@ -10,10 +10,6 @@ services:
       shared-backend:
       shared-ipvlan:
         ipv4_address: 10.251.1.10
-    # ports:
-    #   - "22:22"
-    #   - "3000:3000"
-    #   - "8000:8000"
     volumes:
       - ./taxi-dev-servers/taxi-front-testuser1:/home/ubuntu/taxi-front
       - ./taxi-dev-servers/taxi-back-testuser1:/home/ubuntu/taxi-back
