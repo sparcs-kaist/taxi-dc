@@ -13,12 +13,18 @@ FRONT_DIR="/home/ubuntu/taxi-front"
 if [ ! -d "$BACK_DIR/.git" ]; then
   echo "[entrypoint.sh] $BACK_DIR is empty. Cloning taxi-back repo..."
   git clone https://github.com/sparcs-kaist/taxi-back.git "$BACK_DIR"
+  chown -R ubuntu:ubuntu "$BACK_DIR"
 fi
 
 if [ ! -d "$FRONT_DIR/.git" ]; then
   echo "[entrypoint.sh] $FRONT_DIR is empty. Cloning taxi-front repo..."
   git clone https://github.com/sparcs-kaist/taxi-front.git "$FRONT_DIR"
+  chown -R ubuntu:ubuntu "$FRONT_DIR"
 fi
+
+echo "[entrypoint.sh] Ensuring correct ownership..."
+chown -R ubuntu:ubuntu "$BACK_DIR"
+chown -R ubuntu:ubuntu "$FRONT_DIR"
 
 echo "[entrypoint.sh] Done. Starting final command: $@"
 exec "$@"

@@ -4,8 +4,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     ca-certificates \
-    openssh-server && \
+    openssh-server \
+    npm \
+    vim \
+    sudo && \
     rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get remove -y libnode-dev libnode72 || true
+
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
+    apt-get install -y nodejs &&\
+    npm install -g n &&\
+    n 18.16.0 &&\
+    apt-get purge -y nodejs npm &&\
+    rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g pnpm@8.8.0
 
 RUN mkdir /var/run/sshd && \
     echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
@@ -13,7 +27,7 @@ RUN mkdir /var/run/sshd && \
     echo 'AllowUsers ubuntu' >> /etc/ssh/sshd_config
 
 RUN useradd -m -s /bin/bash ubuntu && \
-    echo 'ubuntu:ubuntu' | chpasswd && \
+    echo 'ubuntu:password' | chpasswd && \
     mkdir -p /home/ubuntu/.ssh && \
     chown -R ubuntu:ubuntu /home/ubuntu/.ssh && \
     chmod 700 /home/ubuntu/.ssh
