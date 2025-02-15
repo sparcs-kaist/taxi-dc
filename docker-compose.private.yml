@@ -6,7 +6,6 @@ services:
       context: ./taxi-dev-servers
       dockerfile: Dockerfile
     networks:
-      shared-proxy:
       shared-backend:
       shared-ipvlan:
         ipv4_address: 10.251.1.10 # TODO: Edit here
@@ -16,9 +15,6 @@ services:
     command: ["/usr/sbin/sshd", "-D"]
 
 networks:
-  shared-proxy:
-    external: true
-    name: taxi-dc_shared-proxy
   shared-backend:
     external: true
     name: taxi-dc_shared-backend
