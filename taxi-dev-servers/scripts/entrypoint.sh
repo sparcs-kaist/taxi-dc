@@ -7,6 +7,12 @@ fi
 
 echo "[entrypoint.sh] Running as DEV_USER: $DEV_USER"
 
+if [ ! -d "/home/ubuntu/.ssh" ]; then
+  echo "[entrypoint.sh] Restoring /home/ubuntu from backup..."
+  cp -ar /tmp/ubuntu-backup/. /home/ubuntu
+  chown -R ubuntu:ubuntu /home/ubuntu
+fi
+
 BACK_DIR="/home/ubuntu/taxi-back"
 FRONT_DIR="/home/ubuntu/taxi-front"
 

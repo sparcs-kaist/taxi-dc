@@ -22,9 +22,15 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
 RUN npm install -g pnpm@8.8.0
 
 # TODO: Generate a new password automatically. ubuntu:password -> ubuntu:${SOME_PASSWORD}
-RUN useradd -m -s /bin/bash ubuntu && \
-    echo 'ubuntu:password' | chpasswd && \
-    mkdir -p /home/ubuntu/.ssh && \
+RUN id ubuntu || useradd -m -s /bin/bash ubuntu
+RUN echo 'ubuntu:password' | chpasswd
+
+RUN cp -a /home/ubuntu /tmp/ubuntu-backup && \
+    chown -R ubuntu:ubuntu /tmp/ubuntu-backup
+
+WORKDIR /home/ubuntu
+
+RUN mkdir -p /home/ubuntu/.ssh && \
     chown -R ubuntu:ubuntu /home/ubuntu/.ssh && \
     chmod 700 /home/ubuntu/.ssh
 
@@ -32,8 +38,6 @@ RUN mkdir /var/run/sshd && \
     echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
     echo 'AllowUsers ubuntu' >> /etc/ssh/sshd_config
-
-WORKDIR /home/ubuntu
 
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
