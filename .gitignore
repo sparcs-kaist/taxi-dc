@@ -4,7 +4,7 @@ taxi-dev-servers/*
 !taxi-dev-servers/Dockerfile
 
 # TAXI DNS
-taxi-dns
+taxi-dns/*
 !taxi-dns/dnsmasq.conf.template
 
 # TAXI MongoDB
