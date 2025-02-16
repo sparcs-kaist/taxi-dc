@@ -3,6 +3,15 @@ taxi-dev-servers/*
 !taxi-dev-servers/scripts/
 !taxi-dev-servers/Dockerfile
 
+# TAXI DNS
+taxi-dns
+
+# TAXI MongoDB
+taxi-mongodb
+
+# Backups
+*.bak
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
