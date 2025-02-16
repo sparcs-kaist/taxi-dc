@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
@@ -26,6 +26,7 @@ RUN mkdir /var/run/sshd && \
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
     echo 'AllowUsers ubuntu' >> /etc/ssh/sshd_config
 
+# TODO: Generate a new password automatically. ubuntu:password -> ubuntu:${SOME_PASSWORD}
 RUN useradd -m -s /bin/bash ubuntu && \
     echo 'ubuntu:password' | chpasswd && \
     mkdir -p /home/ubuntu/.ssh && \
