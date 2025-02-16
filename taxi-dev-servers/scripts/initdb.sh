@@ -12,8 +12,6 @@ if [ -z "$DEV_USER" ]; then
 fi
 
 echo $DEV_USER
-echo $MONGO_ROOT_USERNAME
-echo $MONGO_ROOT_PASSWORD
 echo $DEFAULT_PASSWORD
 
 echo "Creating MongoDB user and database for: $DEV_USER"
