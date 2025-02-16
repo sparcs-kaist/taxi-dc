@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
@@ -21,17 +21,17 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
 
 RUN npm install -g pnpm@8.8.0
 
-RUN mkdir /var/run/sshd && \
-    echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
-    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
-    echo 'AllowUsers ubuntu' >> /etc/ssh/sshd_config
-
 # TODO: Generate a new password automatically. ubuntu:password -> ubuntu:${SOME_PASSWORD}
 RUN useradd -m -s /bin/bash ubuntu && \
     echo 'ubuntu:password' | chpasswd && \
     mkdir -p /home/ubuntu/.ssh && \
     chown -R ubuntu:ubuntu /home/ubuntu/.ssh && \
     chmod 700 /home/ubuntu/.ssh
+
+RUN mkdir /var/run/sshd && \
+    echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
+    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+    echo 'AllowUsers ubuntu' >> /etc/ssh/sshd_config
 
 WORKDIR /home/ubuntu
 
