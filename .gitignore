@@ -5,6 +5,7 @@ taxi-dev-servers/*
 
 # TAXI DNS
 taxi-dns
+!taxi-dns/dnsmasq.conf.template
 
 # TAXI MongoDB
 taxi-mongodb
