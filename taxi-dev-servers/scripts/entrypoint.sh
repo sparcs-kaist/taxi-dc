@@ -23,8 +23,7 @@ if [ ! -d "$FRONT_DIR/.git" ]; then
 fi
 
 echo "[entrypoint.sh] Ensuring correct ownership..."
-chown -R ubuntu:ubuntu "$BACK_DIR"
-chown -R ubuntu:ubuntu "$FRONT_DIR"
+chown -R ubuntu:ubuntu "/home/ubuntu"
 
 echo "[entrypoint.sh] Done. Starting final command: $@"
 exec "$@"
