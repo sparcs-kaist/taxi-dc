@@ -2,6 +2,8 @@
 taxi-dev-servers/*
 !taxi-dev-servers/scripts/
 !taxi-dev-servers/Dockerfile
+!taxi-dev-servers/modules
+!taxi-dev-servers/app.py
 
 # TAXI DNS
 taxi-dns/*
@@ -186,3 +188,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+
