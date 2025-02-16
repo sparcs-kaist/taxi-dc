@@ -1,6 +1,6 @@
 services:
-  taxi-testuser1:
-    container_name: taxi-testuser1
+  taxi-testuser1: # TODO: Edit here
+    container_name: taxi-testuser1 # TODO: Edit here
     restart: always
     build:
       context: ./taxi-dev-servers
@@ -10,8 +10,8 @@ services:
       shared-ipvlan:
         ipv4_address: 10.251.1.10 # TODO: Edit here
     volumes:
-      - ./taxi-dev-servers/taxi-front-testuser1:/home/ubuntu/taxi-front
-      - ./taxi-dev-servers/taxi-back-testuser1:/home/ubuntu/taxi-back
+      - ./taxi-dev-servers/testuser1/taxi-front:/home/ubuntu/taxi-front # TODO: Edit here
+      - ./taxi-dev-servers/testuser1/taxi-back:/home/ubuntu/taxi-back # TODO: Edit here
     command: ["/usr/sbin/sshd", "-D"]
 
 networks:
