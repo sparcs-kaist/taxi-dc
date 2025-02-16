@@ -10,7 +10,7 @@ services:
       shared-ipvlan:
         ipv4_address: 10.251.1.10 # TODO: Edit here
     volumes:
-      - ./taxi-dev-servers/testuser1:/home/ubuntu # TODO: Edit here
+      - ./taxi-dev-servers/users/testuser1:/home/ubuntu # TODO: Edit here
     command: ["/usr/sbin/sshd", "-D"]
 
 networks:
