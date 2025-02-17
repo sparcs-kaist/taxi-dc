@@ -15,16 +15,8 @@ Taxi Dev Center는 Taxi 팀원들을 위한 격리된 개발 환경을 제공하
 ## Architecture
 
 ```mermaid
-graph LR
-    %% External Access Section
-    subgraph External["External Access"]
-        direction TB
-        User["User<br>10.250.1.x/32"]
-        VPN["WireGuard VPN<br>ssal.sparcs.org"]
-    end
-
+graph TB
     subgraph DevServer["Development Server (taxi.dev.sparcs.org)"]
-        direction TB
         subgraph Shared["Shared Services"]
             direction LR
             DNS["DNS Container<br>taxi-dns<br>10.251.1.2"]
@@ -32,29 +24,37 @@ graph LR
         end
 
         subgraph Networks["Networks"]
-            direction TB
-            IPVLan["IPVLan Network (10.251.1.0/24)"]
-            Bridge["Bridge Network (taxi-dc_shared-backend)"]
+            direction LR
+            IPVLan["IPVLan Network<br>(10.251.1.0/24)"]
+            Bridge["Bridge Network<br>(taxi-dc_shared-backend)"]
         end
 
         subgraph DevEnv["Development Environments"]
             direction TB
-            subgraph Dev1["Development Container 1<br>taxi-user1.sparcs.org (10.251.1.X)"]
+            subgraph Dev1["Development Container 1"]
                 direction TB
-                SSH1[" SSH (22) "]
+                ContainerInfo1["taxi-user1.sparcs.org<br>10.251.1.X"]
+                SSH1["       SSH (22)       "]
                 Frontend1["Frontend (3000)<br>/home/ubuntu/taxi-front"]
                 Backend1["Backend (8080)<br>/home/ubuntu/taxi-back"]
             end
 
-            subgraph Dev2["Development Container 2<br>taxi-user2.sparcs.org (10.251.1.Y)"]
+            subgraph Dev2["Development Container 2"]
                 direction TB
-                SSH2[" SSH (22) "]
+                ContainerInfo2["taxi-user2.sparcs.org<br>10.251.1.Y"]
+                SSH2["       SSH (22)       "]
                 Frontend2["Frontend (3000)<br>/home/ubuntu/taxi-front"]
                 Backend2["Backend (8080)<br>/home/ubuntu/taxi-back"]
             end
 
             Dev3["..."]
         end
+    end
+
+    subgraph External["External Access"]
+        direction LR
+        User["User<br>10.250.1.x/32"]
+        VPN["WireGuard VPN<br>ssal.sparcs.org"]
     end
 
     %% External Access Flow
@@ -74,10 +74,12 @@ graph LR
     Dev2 --- IPVLan
 
     %% Container Internal Connections
+    ContainerInfo1 --- SSH1
     SSH1 --- Frontend1
     SSH1 --- Backend1
     Backend1 ---|"MongoDB<br>Access"| Bridge
 
+    ContainerInfo2 --- SSH2
     SSH2 --- Frontend2
     SSH2 --- Backend2
     Backend2 ---|"MongoDB<br>Access"| Bridge
@@ -92,7 +94,7 @@ graph LR
     class User,VPN external
     class DevServer server
     class IPVLan,Bridge network
-    class DNS,MongoDB,Dev1,Dev2,Dev3 container
+    class DNS,MongoDB,Dev1,Dev2,Dev3,ContainerInfo1,ContainerInfo2 container
     class SSH1,Frontend1,Backend1,SSH2,Frontend2,Backend2 service
 ```
 
