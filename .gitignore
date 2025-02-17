@@ -154,6 +154,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+!.env.template
+!.env.back.development.template
+!.env.back.test.template
+!.env.front.template
 
 # Spyder project settings
 .spyderproject
