@@ -233,7 +233,7 @@ class MongoManager:
             
             remove_result = self._execute_mongo_command(remove_cmd)
             if remove_result is not None:
-                print(f"Successfully renamed user from '{old_username}' to '{new_username}'")
+                print(f"Successfully renamed MongoDB user from '{old_username}' to '{new_username}'")
                 return new_password
             
             # If we get here, something went wrong with removing the old user
