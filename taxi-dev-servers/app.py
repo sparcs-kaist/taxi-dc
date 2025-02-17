@@ -1,6 +1,7 @@
 from modules.dns_manager import DNSManager, validate_ip
 from modules.mongo_manager import MongoManager
 from typing import Tuple, Optional
+from tabulate import tabulate
 
 class TaxiDevTools:
     def __init__(self):
@@ -15,11 +16,42 @@ class TaxiDevTools:
         return True
 
     def list_entries(self):
-        """List both DNS entries and MongoDB users"""
-        print("\n=== DNS Entries ===")
-        self.dns_manager.display_dns_entries()
-        print("\n=== MongoDB Users ===")
-        self.mongo_manager.list_users()
+        """List combined DNS and MongoDB entries in a single table"""
+        # Get DNS entries
+        dns_entries = {username: ip for username, ip in self.dns_manager.parse_dns_entries()}
+        
+        # Get MongoDB users
+        mongo_cmd = f'db.getSiblingDB("{self.mongo_manager.env["MONGO_INITDB_DATABASE"]}").getUsers()'
+        mongo_users = self.mongo_manager._execute_mongo_command(mongo_cmd, return_json=True)
+        mongo_info = {}
+        if mongo_users:
+            for user in mongo_users:
+                username = user['user']
+                roles = [f"{role['role']}@{role['db']}" for role in user.get('roles', [])]
+                mongo_info[username] = f"{', '.join(roles)} ({user['db']})"
+
+        # Combine all unique usernames
+        all_usernames = sorted(set(list(dns_entries.keys()) + list(mongo_info.keys())))
+        
+        # Create combined table data
+        table_data = []
+        for username in all_usernames:
+            row = [
+                username,
+                dns_entries.get(username, "No DNS entry"),
+                mongo_info.get(username, "No MongoDB user")
+            ]
+            table_data.append(row)
+
+        # Print combined table
+        print("\nSystem Entries:")
+        headers = ["Username", "IP Address", "MongoDB Roles"]
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
+        # Print summary
+        print(f"\nTotal entries: {len(all_usernames)}")
+        print(f"DNS entries: {len(dns_entries)}")
+        print(f"MongoDB users: {len(mongo_info)}")
 
     def create_user(self, username: str, ip: str) -> bool:
         """Create both DNS entry and MongoDB user"""
