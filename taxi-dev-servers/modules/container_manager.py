@@ -240,6 +240,87 @@ class ContainerManager:
         print(f"🗑 Removed temporary environment files for {username}")
 
         return True
+    
+    def edit_user(self, old_username: str, new_username: str = None, new_ip: str = None):
+        """Edit a user's configuration"""
+        if not self.check_container_exists(old_username):
+            print(f"⚠️ No container found for {old_username}")
+            return False
+
+        if not new_username and not new_ip:
+            print("⚠️ No changes requested")
+            return False
+
+        old_compose_file = self.compose_dir / f"docker-compose.{old_username}.yml"
+        
+        # Get current IP before removing anything
+        current_ip = self._get_current_ip(old_compose_file)
+
+        # Stop the container first
+        subprocess.run([
+            'docker', 'compose',
+            '-f', str(old_compose_file),
+            'down'
+        ], check=True)
+
+        try:
+            # If username is changing
+            if new_username:
+                # Rename the image
+                old_image = f'taxi-{old_username}'
+                new_image = f'taxi-{new_username}'
+                subprocess.run(['docker', 'tag', old_image, new_image], check=True)
+                subprocess.run(['docker', 'rmi', old_image], check=True)
+
+                # Rename user directory
+                old_user_dir = self.root_dir / "taxi-dev-servers" / "users" / old_username
+                new_user_dir = self.root_dir / "taxi-dev-servers" / "users" / new_username
+                if old_user_dir.exists():
+                    subprocess.run(['sudo', 'mv', str(old_user_dir), str(new_user_dir)], check=True)
+
+            # Create new compose file
+            compose_values = {
+                "username": new_username or old_username,
+                "ipv4_address": new_ip or current_ip  # Use saved IP
+            }
+            
+            compose_content = self.load_template(compose_values)
+            new_compose_file = self.compose_dir / f"docker-compose.{new_username or old_username}.yml"
+            
+            # Remove old compose file if username changed
+            if new_username and old_compose_file.exists():
+                old_compose_file.unlink()
+                
+            # Write new compose file
+            new_compose_file.write_text(compose_content)
+
+            # Start container with new configuration
+            subprocess.run([
+                'docker', 'compose',
+                '-f', str(new_compose_file),
+                'up',
+                '-d'
+            ], check=True)
+
+            changes = []
+            if new_username:
+                changes.append(f"username from {old_username} to {new_username}")
+            if new_ip:
+                changes.append(f"IP from {current_ip} to {new_ip}")  # Use saved IP
+            
+            print(f"✅ Updated {', '.join(changes)}")
+            return True
+
+        except Exception as e:
+            print(f"❌ Error updating user: {e}")
+            return False
+    
+    def _get_current_ip(self, compose_file: Path) -> str:
+        """Extract current IP address from compose file"""
+        with open(compose_file) as f:
+            compose_data = yaml.safe_load(f)
+        return compose_data['services'][f'taxi-{compose_file.stem.split(".")[-1]}']['networks']['shared-ipvlan']['ipv4_address']
+
 
 def main():
     manager = ContainerManager()
@@ -250,7 +331,8 @@ def main():
         print("2. Create new container")
         print("3. Remove container")
         print("4. Check container status")
-        print("5. Exit")
+        print("5. Edit container")
+        print("6. Exit")
         
         choice = input("> ")
         
@@ -334,6 +416,27 @@ def main():
                     print(f"Error checking container: {e}")
                     
             case "5":
+                username = input("Enter username to edit: ").strip()
+                if not username:
+                    print("Username cannot be empty")
+                    continue
+                
+                if not manager.check_container_exists(username):
+                    print(f"No container found for {username}")
+                    continue
+                
+                print("\nLeave blank to keep current value:")
+                new_username = input("New username (or press Enter to keep current): ").strip()
+                new_ip = input("New IP address (or press Enter to keep current): ").strip()
+                
+                try:
+                    manager.edit_user(username, 
+                                    new_username if new_username else None,
+                                    new_ip if new_ip else None)
+                except Exception as e:
+                    print(f"Error editing container: {e}")
+            
+            case "6":
                 print("Exiting...")
                 break
                 
