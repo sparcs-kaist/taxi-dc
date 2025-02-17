@@ -99,7 +99,7 @@ graph TB
 ```
 
 ## Directory Structure
-
+```
 taxi-dc/
 ├── taxi-dev-servers/                           # Main development server component
 │   ├── modules/                                # Core functionality modules
@@ -128,6 +128,7 @@ taxi-dc/
     ├── .env.back.development                   # Backend dev environment
     ├── .env.back.test                          # Backend test environment
     └── .env.front                              # Frontend environment
+```
 
 ## Project Setup
 
