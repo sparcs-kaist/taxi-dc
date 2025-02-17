@@ -100,36 +100,34 @@ graph TB
 
 ## Directory Structure
 
-```
 taxi-dc/
-├── taxi-dev-servers/           # Main development server component
-│   ├── modules/               # Core functionality modules
-│   │   ├── container_manager.py  # Docker container management
-│   │   ├── dns_manager.py       # DNS configuration and management
-│   │   └── mongo_manager.py     # MongoDB interaction and management
-│   ├── scripts/              # Automation and setup scripts
-│   │   └── entrypoint.sh      # Container initialization script
-│   ├── users/                # Taxi Front/back repositories for all users
-│   ├── docker-compose-files/ # Docker compose files for all users
-│   ├── Dockerfile           # Main service Dockerfile
-│   ├── Dockerfile.base      # Base image configuration
-│   └── app.py              # Main application entry point
-├── taxi-dns/                # DNS service component
-│   ├── dns_backups/        # DNS configuration backups
-│   ├── dnsmasq.conf        # Active DNS configuration
-│   └── dnsmasq.conf.template # Template for DNS configuration
+├── taxi-dev-servers/                           # Main development server component
+│   ├── modules/                                # Core functionality modules
+│   │   ├── container_manager.py                # Docker container management
+│   │   ├── dns_manager.py                      # DNS configuration and management
+│   │   └── mongo_manager.py                    # MongoDB interaction and management
+│   ├── scripts/                                # Automation and setup scripts
+│   │   └── entrypoint.sh                       # Container initialization script
+│   ├── users/                                  # Taxi Front/back repositories for all users
+│   ├── docker-compose-files/                   # Docker compose files for all users
+│   ├── Dockerfile                              # Main service Dockerfile
+│   ├── Dockerfile.base                         # Base image configuration
+│   └── app.py                                  # Main application entry point
+├── taxi-dns/                                   # DNS service component
+│   ├── dns_backups/                            # DNS configuration backups
+│   ├── dnsmasq.conf                            # Active DNS configuration
+│   └── dnsmasq.conf.template                   # Template for DNS configuration
 ├── Configuration Files
-│   ├── docker-compose.shared.yml      # Shared Docker configuration
-│   ├── docker-compose.private.template.yaml  # Private Docker template
-│   ├── requirements.txt     # Python dependencies
-│   ├── .dockerignore       # Docker ignore rules
-│   └── .gitignore          # Git ignore rules
+│   ├── docker-compose.shared.yml               # Shared Docker configuration
+│   ├── docker-compose.private.template.yaml    # Private Docker template
+│   ├── requirements.txt                        # Python dependencies
+│   ├── .dockerignore                           # Docker ignore rules
+│   └── .gitignore                              # Git ignore rules
 └── Environment Files
-    ├── .env                # Main environment variables
-    ├── .env.back.development  # Backend dev environment
-    ├── .env.back.test     # Backend test environment
-    └── .env.front         # Frontend environment
-```
+    ├── .env                                    # Main environment variables
+    ├── .env.back.development                   # Backend dev environment
+    ├── .env.back.test                          # Backend test environment
+    └── .env.front                              # Frontend environment
 
 ## Project Setup
 
