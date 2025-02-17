@@ -2,6 +2,7 @@
 taxi-dev-servers/*
 !taxi-dev-servers/scripts/
 !taxi-dev-servers/Dockerfile
+!taxi-dev-servers/Dockerfile.base
 !taxi-dev-servers/modules
 !taxi-dev-servers/app.py
 

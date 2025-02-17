@@ -1,5 +1,5 @@
 #!/bin/bash
-DEV_USER="${1:-${DEV_USER}}"
+DEV_USER=${DEV_USER}
 if [ -z "$DEV_USER" ]; then
   echo "[entrypoint.sh] No DEV_USER provided. usage: entrypoint.sh <DEV_USER> or set DEV_USER env."
   exit 1
@@ -27,6 +27,10 @@ if [ ! -d "$FRONT_DIR/.git" ]; then
   git clone https://github.com/sparcs-kaist/taxi-front.git "$FRONT_DIR"
   chown -R ubuntu:ubuntu "$FRONT_DIR"
 fi
+
+echo "${ENV_BACK_DEV}" > /home/ubuntu/taxi-back/.env.development
+echo "${ENV_BACK_TEST}" > /home/ubuntu/taxi-back/.env.test
+echo "${ENV_FRONT}" > /home/ubuntu/taxi-front/.env
 
 echo "[entrypoint.sh] Ensuring correct ownership..."
 chown -R ubuntu:ubuntu "/home/ubuntu"
