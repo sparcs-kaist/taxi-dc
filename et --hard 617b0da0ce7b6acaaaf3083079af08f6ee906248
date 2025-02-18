@@ -1,0 +1,263 @@
+[33mcommit b8b1a25eab5d6bea2448b47da59da502d087dba0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 14:24:26 2025 +0900
+
+    README update
+
+[33mcommit 617b0da0ce7b6acaaaf3083079af08f6ee906248[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 05:24:46 2025 +0900
+
+    Fix: Directory Structure in Readme
+
+[33mcommit 9d71199c7c15e11e4e6b97071a76db1e50185b76[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 05:16:35 2025 +0900
+
+    Fix: directory list spacing
+
+[33mcommit 792998d2a5f82ab8617e77cec606f12a37234054[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 05:14:24 2025 +0900
+
+    Refactor: graph
+
+[33mcommit 6c45a9026236d6fe5dac52b06b953c20372a4f93[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 05:07:15 2025 +0900
+
+    Add: Readme
+
+[33mcommit ec632070aa5da797301228c7bf51dbafd1cbacf4[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 04:10:10 2025 +0900
+
+    Add: Finalized app.py for running entire script and connecting all managers
+
+[33mcommit 8f342dbad8448d4e202a8d75e124bb703656b54c[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 03:53:07 2025 +0900
+
+    Add: Allow editing of containers after creating
+
+[33mcommit 5e70d8c161f74230897c39f96396cca6721a1555[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Tue Feb 18 03:36:58 2025 +0900
+
+    Add: Container Manager to automate creation/deletion of development containers
+
+[33mcommit 4dea871b432d039e8676517319e69dc7b6a3fbce[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Tue Feb 18 00:40:56 2025 +0900
+
+    Add: env templates
+
+[33mcommit 40e0ff32e5043258bf1fc575eae1f2a5eefda983[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Tue Feb 18 00:39:55 2025 +0900
+
+    Add: env template files
+
+[33mcommit d9263de91ea773a02f251cdaa2a509841cae89ce[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Mon Feb 17 23:54:45 2025 +0900
+
+    Refactor: List Entries in One table
+
+[33mcommit 5ffe6e15e221a74efac5afccaefdfff402f04ed6[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Mon Feb 17 05:58:32 2025 +0900
+
+    Add: Mongo Manager for adding/deleting/editing new users
+
+[33mcommit 6bb38661c9a34becd96d51cd18448b2e6f22a7dd[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Mon Feb 17 05:58:06 2025 +0900
+
+    Refactor: Moved modules into taxi-dev-servers
+
+[33mcommit a865db45d6df11d25b3ae9a97ec2587e9559e63b[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 05:01:57 2025 +0900
+
+    Add: gh and screen
+
+[33mcommit 533e965eb37071b178dec4659e638853261f1a8f[m
+Author: MinjaeKimmm <0208mjkim@gmail.com>
+Date:   Mon Feb 17 04:26:41 2025 +0900
+
+    Add: DNS Manager for adding/removing DNS entry w/ rollback and backup
+
+[33mcommit a39fd3823479c564f80acdcfcfb14110e538bf85[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 02:57:57 2025 +0900
+
+    Add: user envrionment restoring
+
+[33mcommit e2399f342e1f22ce9c694c10f90c68dd90e02756[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 02:57:04 2025 +0900
+
+    Add: update docker ignore file
+
+[33mcommit 24ea25b03c247d994c025b93d4ae825f7cd89232[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 02:56:20 2025 +0900
+
+    Add: update docker ignore file
+
+[33mcommit fbc98feca241a64c5c18519471c5aaf3a1aa62b1[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 01:52:47 2025 +0900
+
+    Refactor: mounted volume structure
+
+[33mcommit 2ae6be43dbff99f61ddb645be1bb01c6615864d9[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 01:51:44 2025 +0900
+
+    Edit: update ubuntu version
+
+[33mcommit f212c1a6b911c53f49d912ccc87f8e9fab3f7df3[m
+Author: Ubuntu <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 01:47:02 2025 +0900
+
+    Add: dnsmasq.conf template file
+
+[33mcommit eb8631f0a1c2cda9c4762d8ac4ced7c1a8f4b333[m
+Author: Ubuntu <devtaehyeon@gmail.com>
+Date:   Mon Feb 17 01:45:55 2025 +0900
+
+    Edit: update ignore files
+
+[33mcommit 8ff5703ad1c14ee0cab0ae7e01bd3a9afe5b023e[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 23:56:46 2025 +0900
+
+    Edit: update ignore files for taxi-dns
+
+[33mcommit a0db3f21777b257d646e920b87f5f6597b82a205[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 23:42:25 2025 +0900
+
+    Edit: mount /home/ubuntu
+
+[33mcommit 0a0bb36c8645883f85f15e5b1777b5e63f41189d[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 23:41:36 2025 +0900
+
+    Add: create a new user under initdb (dev)
+
+[33mcommit b097a69dca896c9d440dcf006397474d963cb9a5[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 23:40:51 2025 +0900
+
+    Add: grant all ownership of /home/ubuntu to user ubuntu
+
+[33mcommit 474632561fb82917f3792b3c40ebc4b573e03a86[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 23:38:23 2025 +0900
+
+    Add: init db (dev)
+
+[33mcommit 0673694d175cd8613ab58dcf4ceb6facfacadd34[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 21:08:47 2025 +0900
+
+    Add: TODO comments
+
+[33mcommit 3fa0e9e97f72daf0b5a823925f2d33ab250a75ba[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 21:07:44 2025 +0900
+
+    Add: TODO comments
+
+[33mcommit 80446f2b530772ea85d8d7522c5f09049df30cfb[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 20:56:36 2025 +0900
+
+    Add: taxi-dns and mongodb volume mount
+
+[33mcommit dc761a49373a6737285a1b2b0e4752e8ee0c2f57[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 20:55:48 2025 +0900
+
+    Edit: update git ignores
+
+[33mcommit 6abae1da6f066f7cd986017fec04f72600af52f8[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 19:08:48 2025 +0900
+
+    Add: delete unnecessary echo
+
+[33mcommit 67730e3c0c036042599c28c5fbf35867ccd4ceb3[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 19:08:10 2025 +0900
+
+    Add: DB initialization script
+
+[33mcommit cb232fdbb81a4f236ab33ba86f1cd3da634d4626[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 19:06:43 2025 +0900
+
+    Edit: ubuntu version upgrade
+
+[33mcommit 2f10711d4b03be0bb0d9ee4c12401dd35764f592[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 00:28:03 2025 +0900
+
+    Add: change dir owner
+
+[33mcommit b13544778f9dd677e25ec1c7b46f3d57adad8734[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sun Feb 16 00:24:57 2025 +0900
+
+    Add: update ignore files
+
+[33mcommit 1886ffcb848df8a1084798d7b7d49fb7cc984576[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Sat Feb 15 23:22:22 2025 +0900
+
+    Delete: unnecessary proxy network
+
+[33mcommit 5679c04bea86076867ea3bcbb8f04dd1bc241dc1[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Fri Feb 14 02:04:08 2025 +0900
+
+    Add: TODO comment
+
+[33mcommit a394ad6cee0ef5f9dabb88d8e8122c51e3da0d8a[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Fri Feb 14 02:03:48 2025 +0900
+
+    Delete: unnecessary volumes
+
+[33mcommit 33ae8f30387cbab73d463166354e1b979b2aeb09[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Fri Feb 14 02:00:03 2025 +0900
+
+    Refactor: unnecessary comments
+
+[33mcommit c7f76aeee3cdf5a53f18c09ac628bf747fe7d8e0[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Fri Feb 14 01:58:52 2025 +0900
+
+    Add: shared and private resource
+
+[33mcommit 59ba769ae8fb657da34dc796ece95c4fb4372542[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Fri Feb 14 01:57:29 2025 +0900
+
+    Add: .gitignore
+
+[33mcommit 91f80ba50f8888a7379590d4eaef979e3ffde05b[m
+Author: TaehyeonPark <devtaehyeon@gmail.com>
+Date:   Thu Feb 13 01:57:49 2025 +0900
+
+    Add: shared resources setup
+
+[33mcommit 2b56a6ae761a6c7666fedd9061f5e110f2556b13[m
+Author: TaehyeonPark <84885011+TaehyeonPark@users.noreply.github.com>
+Date:   Wed Jan 22 00:24:50 2025 +0900
+
+    Initial commit

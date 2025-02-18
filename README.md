@@ -170,6 +170,37 @@ taxi-dc/
    - Edit user configurations
    - Remove development environment
 
+## Using Development Containers
+
+1. In SPARCS VPN Configuration, add the following line under the `[Interface]` section
+    ```ini
+    DNS = 10.251.1.2
+
+    ```
+2. SSH Into Development Container Using Custom DNS
+    ```bash
+    ssh ubuntu@username.taxi.sparcs.org
+    ```
+
+3. In the backend directory, run the following comands to setup and run the backend server
+    ```bash
+    cd ~/taxi-back
+    pnpm i
+    pnpm build
+    pnpm sample
+    pnpm start
+    ```
+
+4. In the frontend directory, run the following comands to setup and run the frontend server
+    ```bash
+    cd ~/taxi-front
+    pnpm i
+    pnpm build:all
+    pnpm start:web
+    ```
+
+5. See the deployed application by opening your browser at http://username.taxi.sparcs.org:3000
+
 ## Flow
 ```mermaid
 sequenceDiagram
