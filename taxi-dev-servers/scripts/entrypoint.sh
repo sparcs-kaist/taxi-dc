@@ -28,6 +28,11 @@ if [ ! -d "$FRONT_DIR/.git" ]; then
   chown -R ubuntu:ubuntu "$FRONT_DIR"
 fi
 
+echo "[entrypoint.sh] Moving start.sh..."
+mv /usr/local/bin/start.sh /home/ubuntu/start.sh
+echo "[entrypoint.sh] Moving stop.sh..."
+mv /usr/local/bin/stop.sh /home/ubuntu/stop.sh
+
 echo "${ENV_BACK_DEV}" > /home/ubuntu/taxi-back/.env.development
 echo "${ENV_BACK_TEST}" > /home/ubuntu/taxi-back/.env.test
 echo "${ENV_FRONT}" > /home/ubuntu/taxi-front/.env

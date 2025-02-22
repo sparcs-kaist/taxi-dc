@@ -18,7 +18,11 @@ RUN cp -a /home/ubuntu /tmp/ubuntu-backup && \
     chown -R ubuntu:ubuntu /tmp/ubuntu-backup
 
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/start.sh /usr/local/bin/start.sh
+COPY scripts/stop.sh /usr/local/bin/stop.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/stop.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D"]
