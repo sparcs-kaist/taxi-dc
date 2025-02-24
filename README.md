@@ -16,72 +16,86 @@ Taxi Dev Center는 Taxi 팀원들을 위한 격리된 개발 환경을 제공하
 
 ```mermaid
 graph TB
-    subgraph DevServer["Development Server (taxi.dev.sparcs.org)"]
-        subgraph Shared["Shared Services"]
-            direction LR
-            DNS["DNS Container<br>taxi-dns<br>10.251.1.2"]
-            MongoDB["MongoDB Container<br>taxi-mongo-shared<br>10.251.1.3"]
-        end
-
-        subgraph Networks["Networks"]
-            direction LR
-            IPVLan["IPVLan Network<br>(10.251.1.0/24)"]
-            Bridge["Bridge Network<br>(taxi-dc_shared-backend)"]
-        end
-
-        subgraph DevEnv["Development Environments"]
-            direction TB
-            subgraph Dev1["Development Container 1"]
-                direction TB
-                ContainerInfo1["taxi-user1.sparcs.org<br>10.251.1.X"]
-                SSH1["       SSH (22)       "]
-                Frontend1["Frontend (3000)<br>/home/ubuntu/taxi-front"]
-                Backend1["Backend (8080)<br>/home/ubuntu/taxi-back"]
+    subgraph Entire["Entire Structure"]
+        subgraph DevServer["Host (taxi.dev.sparcs.org)"]
+            subgraph Shared["Shared Resources"]
+                direction LR
+                DNS["DNS Container<br>taxi-dns<br>10.251.1.2"]
+                MongoDB["MongoDB Container<br>taxi-mongo-shared"]
             end
 
-            subgraph Dev2["Development Container 2"]
-                direction TB
-                ContainerInfo2["taxi-user2.sparcs.org<br>10.251.1.Y"]
-                SSH2["       SSH (22)       "]
-                Frontend2["Frontend (3000)<br>/home/ubuntu/taxi-front"]
-                Backend2["Backend (8080)<br>/home/ubuntu/taxi-back"]
+            subgraph Networks["Network Infra"]
+                direction LR
+                IPVLan["IPVLan Network (L3)<br>(10.251.1.0/24)"]
+                Bridge["Bridge Network<br>(shared-backend)"]
             end
 
-            Dev3["..."]
-        end
-    end
+            subgraph NIC["ens19 (NIC)"]
+                direction LR
+                Server1["Server1 <br>(A-Type Record: user1.taxi.sparcs.org)<br>(IPv4: 10.251.1.X)"]
+                Server2["Server2 <br>(A-Type Record: user2.taxi.sparcs.org)<br>(IPv4: 10.251.1.Y)"]
+            end
 
-    subgraph External["External Access"]
-        direction LR
-        User["User<br>10.250.1.x/32"]
-        VPN["WireGuard VPN<br>ssal.sparcs.org"]
+            subgraph HostVolume["Host Volumes"]
+                direction LR
+                Volume1["Host Volume1 <br>(taxi-dc/taxi-dev-servers/users/testuser1)"]
+                Volume2["Host Volume2 <br>(taxi-dc/taxi-dev-servers/users/testuser2)"]
+            end
+
+            subgraph DevEnv["Private Resources"]
+                direction TB
+                subgraph Dev1["Dev1 (10.251.1.X)"]
+                    direction TB
+                    SSH1["sshd (22)<br>(PasswordAuthentication yes)"]
+                    subgraph HomeVolume1["Home (/home/ubuntu)"]
+                        Frontend1["Frontend (user1.taxi.sparcs.org:3000)<br>/home/ubuntu/taxi-front"]
+                        Backend1["Backend (user1.taxi.sparcs.org:8080)<br>/home/ubuntu/taxi-back"]
+                    end
+                end
+
+                subgraph Dev2["Dev2 (10.251.1.Y)"]
+                    direction TB
+                    SSH2["sshd (22)<br>(PasswordAuthentication yes)"]
+                    subgraph HomeVolume2["Home (/home/ubuntu)"]
+                        Frontend2["Frontend (user2.taxi.sparcs.org:3000)<br>/home/ubuntu/taxi-front"]
+                        Backend2["Backend (user2.taxi.sparcs.org:8080)<br>/home/ubuntu/taxi-back"]
+                    end
+                end
+
+                Dev3["..."]
+            end
+        end
+
+        subgraph External["External Access"]
+            direction LR
+            User["User<br>10.250.1.x/32"]
+            VPN["WireGuard VPN<br>ssal.sparcs.org"]
+        end
     end
 
     %% External Access Flow
-    User -->|"Access via<br>WireGuard"| VPN
-    VPN -->|"VPN Network<br>10.251.0.0/16"| DevServer
+    User <-->|"Access via<br>WireGuard"| VPN
+    VPN <-->|"VPN<br>10.251.0.0/16"| NIC
 
     %% DNS Resolution Flow
-    User -.-|"1: Request<br>taxi-user1.sparcs.org"| DNS
-    DNS -.-|"2: Resolve to<br>10.251.1.X"| Dev1
+    VPN -.-|"DNS Query<br>user1.taxi.sparcs.org"| NIC
 
     %% Network Connections
-    DNS --- IPVLan
-    MongoDB --- IPVLan
-    MongoDB --- Bridge
+    DNS <---> IPVLan
+    NIC <---> IPVLan
+    MongoDB <---> Bridge
 
     Dev1 --- IPVLan
     Dev2 --- IPVLan
 
+    %% Volume Mount
+    Volume1 <---> HomeVolume1
+    Volume2 <---> HomeVolume2
+
     %% Container Internal Connections
-    ContainerInfo1 --- SSH1
-    SSH1 --- Frontend1
-    SSH1 --- Backend1
     Backend1 ---|"MongoDB<br>Access"| Bridge
 
-    ContainerInfo2 --- SSH2
-    SSH2 --- Frontend2
-    SSH2 --- Backend2
+    %% ContainerInfo2 --- SSH2
     Backend2 ---|"MongoDB<br>Access"| Bridge
 
     classDef external fill:#e9a,stroke:#333,stroke-width:2px
@@ -95,7 +109,7 @@ graph TB
     class DevServer server
     class IPVLan,Bridge network
     class DNS,MongoDB,Dev1,Dev2,Dev3,ContainerInfo1,ContainerInfo2 container
-    class SSH1,Frontend1,Backend1,SSH2,Frontend2,Backend2 service
+    class SSH1,Frontend1,Backend1,HomeVolume1,SSH2,Frontend2,Backend2 service,HomeVolume2
 ```
 
 ## Directory Structure
