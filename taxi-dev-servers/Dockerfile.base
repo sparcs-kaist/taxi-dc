@@ -14,14 +14,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN apt-get remove -y libnode-dev libnode72 || true
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
     apt-get install -y nodejs &&\
     npm install -g n &&\
-    n 18.16.0 &&\
+    n 22.17.1 &&\
     apt-get purge -y nodejs npm &&\
     rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g pnpm@8.8.0
+RUN npm install -g pnpm@10.13.1
 
 # Check if ubuntu user exists before creating
 RUN id -u ubuntu &>/dev/null || useradd -m -s /bin/bash ubuntu
