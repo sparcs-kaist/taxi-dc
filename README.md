@@ -184,6 +184,17 @@ taxi-dc/
    - Edit user configurations
    - Remove development environment
 
+### Rebuilding Docker Images
+
+After updating either `Dockerfile` or `Dockerfile.base`, run the following commands to apply the changes to the existing Docker containers:
+
+```bash
+source taxi-env/bin/activate
+python taxi-dev-servers/modules/container_manager.py
+```
+
+Then, select the **"6. Rebuild container"** menu option.
+
 ## Using Development Containers
 
 1. In SPARCS VPN Configuration, add the following line under the `[Interface]` section
@@ -208,9 +219,8 @@ taxi-dc/
 4. In the frontend directory, run the following comands to setup and run the frontend server
     ```bash
     cd ~/taxi-front
-    pnpm i
-    pnpm build:all
-    pnpm start:web
+    pnpm web i
+    pnpm web start
     ```
 
 5. See the deployed application by opening your browser at http://username.taxi.sparcs.org:3000

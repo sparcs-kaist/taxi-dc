@@ -37,6 +37,13 @@ class ContainerManager:
                     
         return env_dict
 
+    def _inspect_env(self, username: str, env_name: str) -> str:
+        """Inspect the environment variable for a specific user"""
+        return subprocess.run(
+            f"docker inspect -f '{{{{ range .Config.Env }}}}{{{{ if (index (split . \"=\") 0 | eq \"{env_name}\") }}}}{{{{ . }}}}{{{{ end }}}}{{{{ end }}}}' taxi-{username}",
+            shell=True, capture_output=True, text=True
+        ).stdout.strip()
+
     def _generate_password(self, length=16) -> str:
         """Generate a secure password"""
         chars = string.ascii_letters + string.digits + "!@#$%^&*"
@@ -92,11 +99,7 @@ class ContainerManager:
 
     def build_image(self, username: str, password: str, mongo_password: str):
         """Build the Docker image for a specific user"""
-        try:
-            subprocess.run(['docker', 'image', 'inspect', 'taxi-base'], 
-                        check=True, capture_output=True)
-        except subprocess.CalledProcessError:
-            self.build_base_image()
+        self.build_base_image()
 
         try:
             # Create temporary env files
@@ -131,6 +134,23 @@ class ContainerManager:
             if env_back_test and env_back_test.exists():
                 env_back_test.unlink()
             print(f"🧹 Cleaned up temporary environment files for {username}")
+
+    def rebuild_image(self, username: str, password: str, env_back_dev: str, env_back_test: str, env_front: str):
+        """Rebuild the Docker image for a specific user"""
+        self.build_base_image()
+
+        print(f"🔨 Rebuilding image for {username}...")
+        subprocess.run([
+            'docker', 'build',
+            '--build-arg', f'UBUNTU_PASSWORD={password}',
+            '--build-arg', f'DEV_USER={username}',
+            "--build-arg", f"ENV_BACK_DEV={env_back_dev}",
+            "--build-arg", f"ENV_BACK_TEST={env_back_test}",
+            "--build-arg", f"ENV_FRONT={env_front}",
+            '-t', f'taxi-{username}',
+            str(self.build_dir)
+        ], check=True)
+        print(f"✅ Built image: taxi-{username}")
 
     def load_template(self, values: Dict[str, str]) -> str:
         """Load and populate the template with values"""
@@ -315,6 +335,34 @@ class ContainerManager:
             print(f"❌ Error updating user: {e}")
             return False
     
+    def rebuild_container(self, username: str):
+        """Rebuild a user's container"""
+        if not self.check_container_exists(username):
+            print(f"⚠️ No container found for {username}")
+            return False
+
+        # Generate new password
+        new_password = self._generate_password()
+
+        # Inspect current environment variables
+        env_back_dev = self._inspect_env(username, "ENV_BACK_DEV")
+        env_back_test = self._inspect_env(username, "ENV_BACK_TEST")
+        env_front = self._inspect_env(username, "ENV_FRONT")
+
+        self.rebuild_image(username, new_password, env_back_dev, env_back_test, env_front)
+
+        # Restart the container
+        compose_file = self.compose_dir / f"docker-compose.{username}.yml"
+        subprocess.run([
+            'docker', 'compose',
+            '-f', str(compose_file),
+            'up',
+            '-d'
+        ], check=True)
+
+        print(f"✅ Rebuilt container for {username} with new password: {new_password}")
+        return new_password
+
     def _get_current_ip(self, compose_file: Path) -> str:
         """Extract current IP address from compose file"""
         with open(compose_file) as f:
@@ -332,7 +380,8 @@ def main():
         print("3. Remove container")
         print("4. Check container status")
         print("5. Edit container")
-        print("6. Exit")
+        print("6. Rebuild container")
+        print("7. Exit")
         
         choice = input("> ")
         
@@ -437,6 +486,23 @@ def main():
                     print(f"Error editing container: {e}")
             
             case "6":
+                username = input("Enter username to rebuild: ").strip()
+                if not username:
+                    print("Username cannot be empty")
+                    continue
+                
+                if not manager.check_container_exists(username):
+                    print(f"No container found for {username}")
+                    continue
+
+                confirm = input(f"Are you sure you want to rebuild container for {username}? (y/N): ").lower()
+                if confirm == 'y':
+                    try:
+                        manager.rebuild_container(username)
+                    except Exception as e:
+                        print(f"Error rebuilding container: {e}")
+
+            case "7":
                 print("Exiting...")
                 break
                 
