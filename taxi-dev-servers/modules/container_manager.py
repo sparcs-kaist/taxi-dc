@@ -1,13 +1,10 @@
-import os
 import subprocess
-import tempfile
-import shutil
 from pathlib import Path
 import random
 import string
 import yaml
 from typing import Dict
-import shlex
+import re
 
 class ContainerManager:
     def __init__(self):
@@ -39,10 +36,12 @@ class ContainerManager:
 
     def _inspect_env(self, username: str, env_name: str) -> str:
         """Inspect the environment variable for a specific user"""
-        return subprocess.run(
+        raw_env = subprocess.run(
             f"docker inspect -f '{{{{ range .Config.Env }}}}{{{{ if (index (split . \"=\") 0 | eq \"{env_name}\") }}}}{{{{ . }}}}{{{{ end }}}}{{{{ end }}}}' taxi-{username}",
             shell=True, capture_output=True, text=True
         ).stdout.strip()
+        
+        return raw_env.split(f'{env_name}=')[-1].strip()
 
     def _generate_password(self, length=16) -> str:
         """Generate a secure password"""
@@ -134,23 +133,6 @@ class ContainerManager:
             if env_back_test and env_back_test.exists():
                 env_back_test.unlink()
             print(f"🧹 Cleaned up temporary environment files for {username}")
-
-    def rebuild_image(self, username: str, password: str, env_back_dev: str, env_back_test: str, env_front: str):
-        """Rebuild the Docker image for a specific user"""
-        self.build_base_image()
-
-        print(f"🔨 Rebuilding image for {username}...")
-        subprocess.run([
-            'docker', 'build',
-            '--build-arg', f'UBUNTU_PASSWORD={password}',
-            '--build-arg', f'DEV_USER={username}',
-            "--build-arg", f"ENV_BACK_DEV={env_back_dev}",
-            "--build-arg", f"ENV_BACK_TEST={env_back_test}",
-            "--build-arg", f"ENV_FRONT={env_front}",
-            '-t', f'taxi-{username}',
-            str(self.build_dir)
-        ], check=True)
-        print(f"✅ Built image: taxi-{username}")
 
     def load_template(self, values: Dict[str, str]) -> str:
         """Load and populate the template with values"""
@@ -344,12 +326,23 @@ class ContainerManager:
         # Generate new password
         new_password = self._generate_password()
 
-        # Inspect current environment variables
+        # Inspect current mongo password
         env_back_dev = self._inspect_env(username, "ENV_BACK_DEV")
-        env_back_test = self._inspect_env(username, "ENV_BACK_TEST")
-        env_front = self._inspect_env(username, "ENV_FRONT")
+        mongo_password = None
 
-        self.rebuild_image(username, new_password, env_back_dev, env_back_test, env_front)
+        for line in env_back_dev.splitlines():
+            if line.startswith("DB_PATH="):
+                db_path = line.split('=')[1]
+                match = re.search(r'mongodb://[^:]+:(.+?)@', db_path)
+                if match:
+                    mongo_password = match.group(1)
+                break
+
+        if not mongo_password:
+            print("❌ Could not extract MongoDB password from environment variables")
+            return False
+
+        self.build_image(username, new_password, mongo_password)
 
         # Restart the container
         compose_file = self.compose_dir / f"docker-compose.{username}.yml"
